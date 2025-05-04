@@ -1,6 +1,7 @@
-#include "config.hpp"
 #include <fstream>
 #include <sstream>
+
+#include "config.hpp"
 
 config load_config(const std::string &file_name) {
   config config;
