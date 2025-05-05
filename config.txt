@@ -1,4 +1,4 @@
-memory_limit=1048576
+memory_limit=8
 read_delay=1
 write_delay=1
 shift_delay=1

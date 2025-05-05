@@ -3,7 +3,7 @@
 
 #include "config.hpp"
 
-config load_config(const std::string &file_name) {
+config config::load_config(const std::string &file_name) {
   config config;
   std::ifstream file(file_name);
   std::string line;
