@@ -26,30 +26,29 @@ int file_tape::read_number() {
   file.seekg(current_pos);
   int value;
   file >> value;
+  current_pos = file.tellg();
   return value;
 }
 
 void file_tape::write_number(int value) {
   delay(config.write_delay);
-  file.seekp(current_pos);
-  file << value << " ";
-  file.flush();
+  file << value;
 }
 
 void file_tape::move_left() {
   delay(config.shift_delay);
-  file.seekg(-1 * sizeof(int), std::ios::cur);
+  file.seekg(-1, std::ios::cur);
   current_pos = file.tellg();
 }
 
 void file_tape::move_right() {
   delay(config.shift_delay);
-  file.seekg(sizeof(int), std::ios::cur);
+  file.seekg(1, std::ios::cur);
   current_pos = file.tellg();
 }
 
 void file_tape::move_to_start() {
-  size_t steps = current_pos / sizeof(int);
+  size_t steps = current_pos;
   size_t delay_per_position =
       static_cast<size_t>(steps * config.rewind_delay_per_position);
   delay(delay_per_position);
@@ -59,14 +58,19 @@ void file_tape::move_to_start() {
 
 void file_tape::move_to_end() {
   file.seekg(0, std::ios::end);
-  size_t steps = (file.tellg() - current_pos) / sizeof(int);
+  size_t steps = (file.tellg() - current_pos);
   size_t delay_per_position =
       static_cast<size_t>(steps * config.rewind_delay_per_position);
   delay(delay_per_position);
   current_pos = file.tellg();
 }
 
-bool file_tape::is_at_end() { return file.eof(); }
+bool file_tape::is_at_end() {
+  file.seekg(0, std::ios::end);
+  std::streampos end_pos = file.tellg();
+  file.seekg(current_pos);
+  return (current_pos >= end_pos);
+}
 
 void file_tape::delay(size_t delay) const {
   std::this_thread::sleep_for(std::chrono::milliseconds(delay));

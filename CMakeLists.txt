@@ -4,6 +4,7 @@ set(SOURCES
   src/main.cpp
   src/config/config.cpp
   src/file_tape/file_tape.cpp
+  src/tape_sorter/tape_sorter.cpp
 )
 
 add_executable(tatlin ${SOURCES})

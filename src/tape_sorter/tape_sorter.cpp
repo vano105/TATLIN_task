@@ -6,11 +6,11 @@
 #include "../file_tape/file_tape.hpp"
 #include "tape_sorter.hpp"
 
-struct MergeElement {
+struct merge_element {
   int value;
   tape *tape;
 
-  bool operator>(const MergeElement &other) const {
+  bool operator>(const merge_element &other) const {
     return value > other.value;
   }
 };
@@ -51,7 +51,7 @@ void tape_sorter::split() {
 }
 
 void tape_sorter::merge() {
-  std::priority_queue<MergeElement, std::vector<MergeElement>, std::greater<>>
+  std::priority_queue<merge_element, std::vector<merge_element>, std::greater<>>
       pq;
 
   for (auto &tape_ptr : tmp_tapes) {
@@ -65,7 +65,7 @@ void tape_sorter::merge() {
 
   output_tape.move_to_start();
   while (!pq.empty()) {
-    MergeElement elem = pq.top();
+    merge_element elem = pq.top();
     pq.pop();
 
     output_tape.write_number(elem.value);
